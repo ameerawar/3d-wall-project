@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>3D Wall Model</title>
+    <title>3D Wall Test</title>
     <style>
         body { margin: 0; }
         canvas { display: block; }
@@ -11,8 +11,6 @@
     </style>
     <!-- Include Three.js from CDN -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <!-- Include GLTFLoader to load 3D models -->
-    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
 </head>
 <body>
 
@@ -26,51 +24,39 @@
     </div>
 
     <script>
-        // Scene, Camera, Renderer Setup
+        // Create a basic scene, camera, and renderer
         var scene = new THREE.Scene();
         var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
         var renderer = new THREE.WebGLRenderer();
         renderer.setSize(window.innerWidth, window.innerHeight);
         document.body.appendChild(renderer.domElement);
 
-        // Load the 3D wall model
-        var loader = new THREE.GLTFLoader();
-        var wall;
-        loader.load('3d_wall.glb', function(gltf) {
-            wall = gltf.scene;
-            scene.add(wall);
-            camera.position.z = 5;  // Adjust the camera position
-        }, undefined, function(error) {
-            console.error('An error occurred while loading the model:', error);  // Log loading errors
-            alert('There was an issue loading the 3D model. Please check the console for details.');
-        });
+        // Create a cube to simulate a 3D wall
+        var geometry = new THREE.BoxGeometry(2, 2, 0.1);  // Width, Height, Depth
+        var material = new THREE.MeshBasicMaterial({ color: '#ffffff' });
+        var wall = new THREE.Mesh(geometry, material);
+        scene.add(wall);
 
-        // Function to animate the scene (keep updating the renderer)
+        camera.position.z = 5;  // Set the camera position
+
+        // Render function
         var animate = function () {
             requestAnimationFrame(animate);
-            if (wall) wall.rotation.y += 0.01;  // Optional rotation for visualization
+            wall.rotation.y += 0.01;  // Slowly rotate the wall
             renderer.render(scene, camera);
         };
         animate();
 
-        // Adjust wall size based on the slider input
+        // Adjust wall size based on slider input
         var sizeSlider = document.getElementById('sizeSlider');
         sizeSlider.addEventListener('input', function() {
-            if (wall) {
-                wall.scale.set(sizeSlider.value, sizeSlider.value, sizeSlider.value);  // Adjust X, Y, Z scaling
-            }
+            wall.scale.set(sizeSlider.value, sizeSlider.value, sizeSlider.value);
         });
 
-        // Change wall color based on the color picker input
+        // Adjust wall color based on color picker input
         var colorPicker = document.getElementById('colorPicker');
         colorPicker.addEventListener('input', function() {
-            if (wall) {
-                wall.traverse(function(child) {
-                    if (child.isMesh) {
-                        child.material.color.set(colorPicker.value);  // Change the material color
-                    }
-                });
-            }
+            wall.material.color.set(colorPicker.value);
         });
     </script>
 
