@@ -3,62 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>3D Wall Test</title>
+    <title>Three.js Basic Test</title>
     <style>
         body { margin: 0; }
-        canvas { display: block; }
-        #controls { margin: 20px; text-align: center; }
     </style>
     <!-- Include Three.js from CDN -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 </head>
 <body>
-
-    <!-- Controls for adjusting size and color -->
-    <div id="controls">
-        <label for="sizeSlider">Adjust Wall Size: </label>
-        <input type="range" id="sizeSlider" min="1" max="5" step="0.1" value="1">
-        <br><br>
-        <label for="colorPicker">Choose Wall Color: </label>
-        <input type="color" id="colorPicker" value="#ffffff">
-    </div>
-
     <script>
-        // Create a basic scene, camera, and renderer
+        // Basic Three.js Scene Setup
         var scene = new THREE.Scene();
         var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
         var renderer = new THREE.WebGLRenderer();
         renderer.setSize(window.innerWidth, window.innerHeight);
         document.body.appendChild(renderer.domElement);
 
-        // Create a cube to simulate a 3D wall
-        var geometry = new THREE.BoxGeometry(2, 2, 0.1);  // Width, Height, Depth
-        var material = new THREE.MeshBasicMaterial({ color: '#ffffff' });
-        var wall = new THREE.Mesh(geometry, material);
-        scene.add(wall);
+        // Create a simple Cube
+        var geometry = new THREE.BoxGeometry(1, 1, 1);
+        var material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+        var cube = new THREE.Mesh(geometry, material);
+        scene.add(cube);
 
-        camera.position.z = 5;  // Set the camera position
+        camera.position.z = 5;
 
-        // Render function
-        var animate = function () {
+        // Animation loop
+        function animate() {
             requestAnimationFrame(animate);
-            wall.rotation.y += 0.01;  // Slowly rotate the wall
+            cube.rotation.x += 0.01;
+            cube.rotation.y += 0.01;
             renderer.render(scene, camera);
-        };
+        }
         animate();
-
-        // Adjust wall size based on slider input
-        var sizeSlider = document.getElementById('sizeSlider');
-        sizeSlider.addEventListener('input', function() {
-            wall.scale.set(sizeSlider.value, sizeSlider.value, sizeSlider.value);
-        });
-
-        // Adjust wall color based on color picker input
-        var colorPicker = document.getElementById('colorPicker');
-        colorPicker.addEventListener('input', function() {
-            wall.material.color.set(colorPicker.value);
-        });
     </script>
-
 </body>
 </html>
