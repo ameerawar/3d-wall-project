@@ -41,7 +41,8 @@
             scene.add(wall);
             camera.position.z = 5;  // Adjust the camera position
         }, undefined, function(error) {
-            console.error('An error happened', error);  // Log any loading errors
+            console.error('An error occurred while loading the model:', error);  // Log loading errors
+            alert('There was an issue loading the 3D model. Please check the console for details.');
         });
 
         // Function to animate the scene (keep updating the renderer)
